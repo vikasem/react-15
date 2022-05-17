@@ -4,10 +4,10 @@ let Navbar = () => {
     return (
         <nav className={classes.nav}>
             <div className={classes.item}>
-                <a>Profile</a>
+                <a href='/profile'>Profile</a>
             </div>
             <div className={classes.item}>
-                <a>Message</a>
+                <a  href='/dialogs'>Message</a>
             </div>
             <div className={classes.item}>
                 <a>News</a>
