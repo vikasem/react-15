@@ -26,6 +26,7 @@ let state = {
 export let addPost = (postMes) => {
     let newPost = {
         id: 3,
+        
         message: postMes,
         count: 1
     }
