@@ -7,7 +7,10 @@ let Profile = (props) => {
         <div>
     
             <ProfileInfo />
-            <MyPosts post={props.state.postData} addPost={props.addPost}/>
+            <MyPosts post={props.profilePage.postData} 
+            newPostText={props.profilePage.newPostText}
+            updateNewPostText = {props.updateNewPostText}
+            addPost={props.addPost}/>
 
         </div>
     );
