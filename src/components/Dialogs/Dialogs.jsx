@@ -6,20 +6,24 @@ import Message from './Message/Message.jsx'
 
 
 let Dialogs = (props) => {
-    let dialogsData = props.dialogPage.dialogsData;
-    let messageData = props.dialogPage.messageData;
+    debugger;
+
+    let state = props.store.getState().dialogPage
+
+    let dialogsData = state.dialogsData;
+    let messageData = state.messageData;
 
     let dialogsElements = dialogsData.map(dialog => <DialogItem name={dialog.name} id={dialog.id} />)
 
     let messagesElements = messageData.map(message => <Message message={message.message} id={message.id} />)
 
     let addMessage = () => {
-        props.dispatch(addMessageActionCreator())
+        props.store.dispatch(addMessageActionCreator())
     }
 
     let onPostChange = (e) => {
         let message = e.target.value;
-        props.dispatch(updateMessageActionCreator(message))
+        props.store.dispatch(updateMessageActionCreator(message))
     }
 
     return (
@@ -29,7 +33,7 @@ let Dialogs = (props) => {
             </div>
             <div className={classes.messages}>
                 {messagesElements}
-                <textarea value = {props.dialogPage.newMessageText} onChange = {onPostChange}></textarea>
+                <textarea value = {props.state.newMessageText} onChange = {onPostChange}></textarea>
                 <button onClick={ addMessage }>Отправить</button>
             </div>
         </div>
