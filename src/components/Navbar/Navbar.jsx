@@ -11,6 +11,9 @@ let Navbar = () => {
                 <NavLink  to='/dialogs'>Message</NavLink>
             </div>
             <div className={classes.item}>
+                <NavLink  to='/users'>Users</NavLink>
+            </div>
+            <div className={classes.item}>
                 <a>News</a>
             </div>
             <div className={classes.item}>
