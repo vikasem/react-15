@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addMessageActionCreator, updateMessageActionCreator } from '../../redux/dialogReducer';
+import { addMessageActionCreator, updateMessageActionCreator } from '../../redux/dialogReducer.ts';
 import Dialogs from './Dialogs.jsx'
 
 let superDialogsContainer = (props) => {

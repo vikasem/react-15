@@ -5,6 +5,22 @@ const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT'
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 
+type UserType = {
+    id: number
+    name: string
+    status: string
+    photos: {large:string, small:string}
+    followed: boolean
+}
+
+type InitialStateType = {
+    users: Array<UserType>,
+    totalUsersCount: number,
+    pageSize: number,
+    currentPage: number,
+    isFetching: boolean
+}
+
 let initialState = {
     users: [],
     totalUsersCount: 0,
@@ -13,7 +29,7 @@ let initialState = {
     isFetching: false 
 }
 
-const usersReducer = (state = initialState, action) => {
+const usersReducer = (state = initialState, action:any):InitialStateType => {
     switch (action.type) {
         case FOLLOW: {
             return {
@@ -72,14 +88,37 @@ const usersReducer = (state = initialState, action) => {
 
 }
 
-//...state.users, 
+type FollowActionType = {
+    type: typeof FOLLOW
+    userId: number
+}
+type UnFollowActionType = {
+    type: typeof UNFOLLOW
+    userId: number
+}
+type SetUsersActionType = {
+    type: typeof SET_USERS
+    users: any
+}
+type SetCurrentPageActionType = {
+    type: typeof SET_CURRENT_PAGE
+    currentPage: number
+}
+type SetTotalCountActionType = {
+    type: typeof SET_TOTAL_USERS_COUNT
+    totalUsersCount: number
+}
+type SetIsFetchingActionType = {
+    type: typeof TOGGLE_IS_FETCHING
+    isFetching:boolean
+}
 
-export let follow = (userId) => ({ type: FOLLOW, userId })
-export let unfollow = (userId) => ({ type: UNFOLLOW, userId })
-export let setUsers = (users) => ({ type: SET_USERS, users})
-export let setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage})
-export let setTotalCount = (totalUsersCount) => ({ type: SET_TOTAL_USERS_COUNT, totalUsersCount})
-export let setIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching})
+export let follow = (userId:number):FollowActionType => ({ type: FOLLOW, userId })
+export let unfollow = (userId:number):UnFollowActionType => ({ type: UNFOLLOW, userId })
+export let setUsers = (users:any):SetUsersActionType => ({ type: SET_USERS, users})
+export let setCurrentPage = (currentPage:number):SetCurrentPageActionType => ({ type: SET_CURRENT_PAGE, currentPage})
+export let setTotalCount = (totalUsersCount:number):SetTotalCountActionType => ({ type: SET_TOTAL_USERS_COUNT, totalUsersCount})
+export let setIsFetching = (isFetching:boolean):SetIsFetchingActionType => ({type: TOGGLE_IS_FETCHING, isFetching})
 
 
 export default usersReducer

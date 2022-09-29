@@ -1,5 +1,5 @@
 import {combineReducers, legacy_createStore as createStore} from "redux";
-import dialogReducer from "./dialogReducer"
+import dialogReducer from "./dialogReducer.ts"
 import profileReducer from "./profileReducer"
 import usersReducer from "./usersReducer";
 

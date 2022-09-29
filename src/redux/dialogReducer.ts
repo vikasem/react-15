@@ -1,7 +1,23 @@
 const ADD_MESSAGE = 'ADD-MESSAGE'
 const UPDATE_MESSAGE = 'UPDATE-MESSAGE'
 
-let initialState = {
+type dialogsDataType = {
+    id: number
+    name: string
+}
+
+type messageDataType = {
+    id: number
+    message: string
+}
+
+type InitislStateType = {
+    dialogsData: Array<dialogsDataType>
+    messageData: Array<messageDataType>
+    newMessageText: string
+}
+
+let initialState:InitislStateType = {
     dialogsData: [
         { id: 1, name: 'Maria' },
         { id: 2, name: 'Sebastian' },
@@ -19,7 +35,7 @@ let initialState = {
     newMessageText: ''
 }
 
-let dialogReducer = (state = initialState, action) => {
+let dialogReducer = (state = initialState, action: any):InitislStateType => {
     switch(action.type){
         case ADD_MESSAGE:
             return {
@@ -39,8 +55,16 @@ let dialogReducer = (state = initialState, action) => {
     
 }
 
-export let addMessageActionCreator = () => ({type: ADD_MESSAGE})
+type AddMessageActionType = {
+    type: typeof ADD_MESSAGE
+}
+type UpdateMessageActionType = {
+    type: typeof UPDATE_MESSAGE 
+    newMessage: string
+}
 
-export let updateMessageActionCreator = (message) => ({type: UPDATE_MESSAGE, newMessage: message})
+export let addMessageActionCreator = ():AddMessageActionType => ({type: ADD_MESSAGE})
+
+export let updateMessageActionCreator = (message: string):UpdateMessageActionType => ({type: UPDATE_MESSAGE, newMessage: message})
 
 export default dialogReducer

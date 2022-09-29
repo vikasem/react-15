@@ -76,14 +76,7 @@ let mapStateToProps = (state) => {
 //     }
 // }
 
-let UsersContainer = connect(mapStateToProps, {
-    follow: follow,
-    unfollow: unfollow,
-    setUsers: setUsers,
-    setCurrentPage: setCurrentPage,
-    setTotalCount: setTotalCount,
-    setIsFetching: setIsFetching
-    
-})(usersClass)
+let UsersContainer = connect(mapStateToProps, {follow, unfollow, setUsers, 
+    setCurrentPage, setTotalCount, setIsFetching })(usersClass)
 
 export default UsersContainer
