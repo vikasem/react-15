@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Navigate } from 'react-router-dom';
 import classes from './Dialogs.module.css';
 import DialogItem from './DialogsItem/DialogsItem.jsx'
 import Message from './Message/Message.jsx'

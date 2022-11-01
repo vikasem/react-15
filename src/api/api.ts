@@ -15,13 +15,13 @@ export let usersApi = {
                 return response.data
             })
     },
-    userDelete(id) {
+    userDelete(id: any) {
         return instance.delete(`follow/${id}`)
         .then(response => {
             return response.data
         })
     },
-    userPost(id) {
+    userPost(id: any) {
         return instance.post(`follow/${id}`, {},)
         .then(response => {
             return response.data
@@ -30,7 +30,7 @@ export let usersApi = {
 }
 
 export let profileApi = {
-    infoUser(id) {
+    infoUser(id: string) {
         return instance.get('profile/' + id)
         .then(response => {
             return response.data

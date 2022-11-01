@@ -1,3 +1,5 @@
+import { profileApi } from "../api/api"
+
 const ADD_POST = 'ADD-POST'
 const UPDATE_TEXT = 'UPDATE-TEXT'
 const SET_PROFILE_USER = 'SET_PROFILE_USER'
@@ -65,6 +67,18 @@ type SetProfileUserActionType = {
 export let addPostActionCreator = ():AddPostActionType => ({type: ADD_POST})
 export let updateTextActionCreator = (text:string):UpdateTextActionType => ({type: UPDATE_TEXT, newText: text})
 export let setProfileUser = (profile:any):SetProfileUserActionType => ({type:SET_PROFILE_USER, profile})
+
+export let profileUser = (userId: any) => {
+    return (dispatch: any) => {
+        if (!userId){
+            userId = 2;
+        }
+        profileApi.infoUser(userId)
+        .then(data => {
+            dispatch(setProfileUser(data))
+        })
+    }
+}
 
 
 export default profileReducer
