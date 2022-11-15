@@ -5,8 +5,8 @@ import { profileUser, getStatus, updateStatus } from '../../redux/profileReducer
 import {
     useLocation,
     useNavigate,
-    useParams,
-} from "react-router-dom";
+    useParams
+} from "react-router";
 import { withAuthRedirect } from '../HOC/withAuthRedirect.jsx';
 import { compose } from 'redux'
 import { useEffect } from 'react';
