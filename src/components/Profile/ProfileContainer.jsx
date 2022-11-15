@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Profile from './Profile.jsx';
 import { connect } from 'react-redux';
-import { profileUser } from '../../redux/profileReducer';
+import { profileUser, getStatus, updateStatus } from '../../redux/profileReducer';
 import {
     useLocation,
     useNavigate,
@@ -9,42 +9,68 @@ import {
 } from "react-router-dom";
 import { withAuthRedirect } from '../HOC/withAuthRedirect.jsx';
 import { compose } from 'redux'
-class profileClass extends React.Component {
+import { useEffect } from 'react';
+// class profileClass extends React.Component {
 
-    componentDidMount() {
-        let userId = this.props.router.params.userId
-        this.props.profileUser(userId);
-    } 
+//     componentDidMount() {
+//         let userId = this.props.router.params.userId
+//         if (!userId){
+//             userId = this.props.userId
+//         }
+//         this.props.profileUser(userId);
+//         this.props.getStatus(userId)
+//         debugger;
+//     } 
 
-    render () {
-        return <Profile {...this.props} profile = {this.props.profile} />
-    }
+//     render () {
+//         return <Profile {...this.props} profile = {this.props.profile} status = {this.props.status} 
+//         updateStatus = {this.props.updateStatus} />
+//     }
+// }
+
+let ProfileContainer = (props) => {
+    let location = useLocation();
+    let navigate = useNavigate();
+    let params = useParams();
+    let router={ location, navigate, params }
+    useEffect(()=> {
+        let userId = router.params.userId
+        if (!userId){
+            userId = props.userId
+        }
+        props.profileUser(userId);
+        props.getStatus(userId)
+    })
+    debugger;
+    return (
+        <Profile {...props} profile = {props.profile} status = {props.status} 
+        updateStatus = {props.updateStatus} />
+    )
 }
 let mapStateToProps = (state) => ({
     profile: state.profilePage.profile,
+    status: state.profilePage.status,
+    userId: state.auth.userId
 })
 
-function withRouter(Component) {
-    function ComponentWithRouterProp(props) {
-        let location = useLocation();
-        let navigate = useNavigate();
-        let params = useParams();
-        return (
-            <Component
-                {...props}
-                router={{ location, navigate, params }}
-            />
-        );
-    }
-    return ComponentWithRouterProp;
-}
-
-// let AuthRedirectComponent = withAuthRedirect(profileClass)
-
-// let ProfileContainer = connect(mapStateToProps, {profileUser})(withRouter(AuthRedirectComponent))
+// function withRouter(Component) {
+//     function ComponentWithRouterProp(props) {
+//         let location = useLocation();
+//         let navigate = useNavigate();
+//         let params = useParams();
+//         debugger;
+//         return (
+//             <Component
+//                 {...props}
+//                 router={{ location, navigate, params }}
+//             />
+//         );
+//     }
+//     return ComponentWithRouterProp;
+// }
 
 export default compose(
-    connect(mapStateToProps, {profileUser}),
-    withRouter,
+    connect(mapStateToProps, {profileUser, getStatus, updateStatus}),
+    //withRouter,
     withAuthRedirect)
-    (profileClass)
+    (ProfileContainer)

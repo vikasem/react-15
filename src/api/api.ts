@@ -30,8 +30,20 @@ export let usersApi = {
 }
 
 export let profileApi = {
-    infoUser(id: string) {
+    infoUser(id: any) {
         return instance.get('profile/' + id)
+        .then(response => {
+            return response.data
+        })
+    },
+    getStatus(id: any) {
+        return instance.get('profile/status/' + id)
+        .then(response => {
+            return response.data
+        })
+    },
+    updateStatus(status: string) {
+        return instance.put('profile/status', {status: status})
         .then(response => {
             return response.data
         })
