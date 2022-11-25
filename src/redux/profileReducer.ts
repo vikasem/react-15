@@ -34,13 +34,8 @@ const profileReducer = (state = initialState, action:any):initialStateType => {
         case ADD_POST: 
             return {
                 ...state,
-                postData: [...state.postData, { id: 3, message: state.newPostText, count: 1}],
+                postData: [...state.postData, { id: 3, message: action.newPostText, count: 1}],
                 newPostText: ''
-            };
-        case UPDATE_TEXT: 
-            return {
-                ...state,
-                newPostText: action.newText
             };
         case SET_PROFILE_USER: 
             return {
@@ -61,11 +56,9 @@ const profileReducer = (state = initialState, action:any):initialStateType => {
 
 type AddPostActionType = {
     type: typeof ADD_POST
+    newPostText: string
 }
-type UpdateTextActionType = {
-    type: typeof UPDATE_TEXT 
-    newText: string
-}
+
 type SetProfileUserActionType = {
     type: typeof SET_PROFILE_USER 
     profile: any
@@ -75,8 +68,7 @@ type SetStatusActionType = {
     status: string
 }
 
-export let addPostActionCreator = ():AddPostActionType => ({type: ADD_POST})
-export let updateTextActionCreator = (text:string):UpdateTextActionType => ({type: UPDATE_TEXT, newText: text})
+export let addPostActionCreator = (newPostText: string):AddPostActionType => ({type: ADD_POST, newPostText})
 export let setProfileUser = (profile:any):SetProfileUserActionType => ({type:SET_PROFILE_USER, profile})
 export let setStatus = (status: any):SetStatusActionType => ({type: SET_STATUS, status})
 

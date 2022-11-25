@@ -40,31 +40,20 @@ let dialogReducer = (state = initialState, action: any):InitislStateType => {
         case ADD_MESSAGE:
             return {
                 ...state,
-                messageData: [...state.messageData, { id: 5, message: state.newMessageText }],
-                newMessageText: ''
-            }
-        case UPDATE_MESSAGE:
-            return {
-                ...state,
-                newMessageText: action.newMessage
+                messageData: [...state.messageData, { id: 5, message: action.newMessageText }]
             }
         default:
             return state
         
     }
-    
 }
 
 type AddMessageActionType = {
     type: typeof ADD_MESSAGE
-}
-type UpdateMessageActionType = {
-    type: typeof UPDATE_MESSAGE 
-    newMessage: string
+    newMessageText: string
 }
 
-export let addMessageActionCreator = ():AddMessageActionType => ({type: ADD_MESSAGE})
+export let addMessageActionCreator = (newMessageText: string):AddMessageActionType => ({type: ADD_MESSAGE, newMessageText})
 
-export let updateMessageActionCreator = (message: string):UpdateMessageActionType => ({type: UPDATE_MESSAGE, newMessage: message})
 
 export default dialogReducer
