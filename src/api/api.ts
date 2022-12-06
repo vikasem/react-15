@@ -50,9 +50,21 @@ export let profileApi = {
     }
 }
 
-export let headerApi = {
+export let meApi = {
     meInfo() {
         return instance.get('auth/me')
+        .then(response => {
+            return response.data
+        })
+    },
+    login(email: any, password: any, rememderMe: any = false) {
+        return instance.post('auth/login', {email, password, rememderMe})
+        .then(response => {
+            return response.data
+        })
+    },
+    logout() {
+        return instance.delete('auth/login')
         .then(response => {
             return response.data
         })

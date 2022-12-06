@@ -41,7 +41,6 @@ let ProfileContainer = (props) => {
         props.profileUser(userId);
         props.getStatus(userId)
     },[])
-    debugger;
     return (
         <Profile {...props} profile = {props.profile} status = {props.status} 
         updateStatus = {props.updateStatus} />
