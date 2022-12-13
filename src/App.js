@@ -20,10 +20,6 @@ const App = (props) => {
   if (!props.initialized) {
     return <Preloader />
   }
-
-  // useEffect(() => {
-  //   props.userAuthorization()
-  // }, [])
   return (
     <div className='app-wrapper'>
       <HeaderContainer />
