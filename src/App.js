@@ -1,16 +1,21 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, Suspense, lazy } from 'react';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
-import DialogsContainer from './components/Dialogs/DialogsContainer';
+//import DialogsContainer from './components/Dialogs/DialogsContainer';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UsersContainer from './components/Users/UsersContainer';
-import ProfileContainer from './components/Profile/ProfileContainer';
+//import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Login from './components/Login/login';
 import { connect } from 'react-redux';
 import { initializeApp } from './redux/appReducer';
 import { userAuthorization } from './redux/authReducer';
 import Preloader from './components/common/Preloader';
+import { Provider } from 'react-redux';
+import store from './redux/redux-store';
+
+let DialogsContainer = React.lazy(()=> import('./components/Dialogs/DialogsContainer'))
+let ProfileContainer = React.lazy(()=> import('./components/Profile/ProfileContainer'))
 
 const App = (props) => {
   useEffect(() => {
@@ -25,6 +30,7 @@ const App = (props) => {
       <HeaderContainer />
       <Navbar />
       <div className='app-wrapper-content'>
+      <Suspense fallback={<div><Preloader /></div>}>
         <Routes>
           <Route path="/dialogs/*" element={<DialogsContainer />} />
           <Route path="/profile/:userId" element={<ProfileContainer />} />
@@ -32,6 +38,7 @@ const App = (props) => {
           <Route path="/users" element={<UsersContainer />} />
           <Route path="/login" element={<Login />} />
         </Routes>
+      </Suspense>
       </div>
     </div>
 
@@ -46,4 +53,14 @@ let mapStateToProps = (state) => (
 
 let AppContainer = connect(mapStateToProps, { initializeApp, userAuthorization })(App)
 
-export default AppContainer;
+const MainApp = () => {
+  return(
+  <BrowserRouter>
+    <Provider store={store}>
+      <AppContainer />
+    </Provider>
+  </BrowserRouter>
+  )
+}
+
+export default MainApp;

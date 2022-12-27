@@ -10,7 +10,7 @@ export const getUsersSelector = (state) => {
     return getAllUsers(state).filter(u => true)
 }
 
-//сложный селектор без использования с использованием библиотеки 
+//сложный селектор с использованием библиотеки 
 
 export const getUsersSuperSelector = createSelector(getAllUsers, (users) => {
     return users.filter(u => true)

@@ -11,6 +11,7 @@ let MyPosts = (props) => {
 
     let onAddPost = (values) => {
         props.addPost(values.newPostText);
+        values.newPostText = "";
     }
     return (
         <div className={classes.changeBlock}>

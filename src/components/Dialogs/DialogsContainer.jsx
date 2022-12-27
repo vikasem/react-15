@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addMessageActionCreator } from '../../redux/dialogReducer.ts';
+import { addMessage } from '../../redux/dialogReducer.ts';
 import Dialogs from './Dialogs.jsx'
 import { withAuthRedirect } from '../HOC/withAuthRedirect.jsx';
 import { compose } from 'redux'
@@ -12,15 +12,15 @@ let mapStateToProps = (state) => {
     }
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-        addMessageActionCreator: (newMessageText) => {
-            dispatch(addMessageActionCreator(newMessageText));
-        }
-    }
-}
+// let mapDispatchToProps = (dispatch) => {
+//     return {
+//         addMessageActionCreator: (newMessageText) => {
+//             dispatch(addMessageActionCreator(newMessageText));
+//         }
+//     }
+// }
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps, {addMessage}),
     withAuthRedirect
     )(Dialogs)

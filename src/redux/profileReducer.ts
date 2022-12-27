@@ -1,9 +1,9 @@
 import { profileApi } from "../api/api"
 
-const ADD_POST = 'ADD-POST'
-const UPDATE_TEXT = 'UPDATE-TEXT'
-const SET_PROFILE_USER = 'SET_PROFILE_USER'
-const SET_STATUS = 'SET_STATUS'
+const ADD_POST = 'profile/ADD-POST'
+const SET_PROFILE_USER = 'profile/SET_PROFILE_USER'
+const SET_STATUS = 'profile/SET_STATUS'
+const DELETE_POST = 'profile/DELETE_POST'
 
 type PostDataType = {
     id: number
@@ -29,15 +29,15 @@ let initialState: initialStateType = {
     status: ''
 }
 
-const profileReducer = (state = initialState, action:any):initialStateType => {
+const profileReducer = (state = initialState, action: any): initialStateType => {
     switch (action.type) {
-        case ADD_POST: 
+        case ADD_POST:
             return {
                 ...state,
-                postData: [...state.postData, { id: 3, message: action.newPostText, count: 1}],
+                postData: [...state.postData, { id: 3, message: action.newPostText, count: 1 }],
                 newPostText: ''
             };
-        case SET_PROFILE_USER: 
+        case SET_PROFILE_USER:
             return {
                 ...state,
                 profile: action.profile
@@ -47,11 +47,15 @@ const profileReducer = (state = initialState, action:any):initialStateType => {
                 ...state,
                 status: action.status
             };
+        case DELETE_POST:
+            return {
+                ...state,
+                postData: state.postData.filter(post => post.id != action.id)
+            };
         default:
             return state
 
     }
-
 }
 
 type AddPostActionType = {
@@ -60,7 +64,7 @@ type AddPostActionType = {
 }
 
 type SetProfileUserActionType = {
-    type: typeof SET_PROFILE_USER 
+    type: typeof SET_PROFILE_USER
     profile: any
 }
 type SetStatusActionType = {
@@ -68,37 +72,31 @@ type SetStatusActionType = {
     status: string
 }
 
-export let addPostActionCreator = (newPostText: string):AddPostActionType => ({type: ADD_POST, newPostText})
-export let setProfileUser = (profile:any):SetProfileUserActionType => ({type:SET_PROFILE_USER, profile})
-export let setStatus = (status: any):SetStatusActionType => ({type: SET_STATUS, status})
-
-export let profileUser = (userId: any) => {
-    return (dispatch: any) => {
-        profileApi.infoUser(userId)
-        .then(data => {
-            dispatch(setProfileUser(data))
-        })
-    }
+type DeletePostActionType = {
+    type: typeof DELETE_POST
+    id: number
 }
 
-export let getStatus = (userId: any) => {
-    return (dispatch: any) => {
-        profileApi.getStatus(userId)
-        .then(data => {
-            dispatch(setStatus(data))
-        })
-    }
-}
-export let updateStatus = (status: any) => {
-    return (dispatch: any) => {
-        profileApi.updateStatus(status)
-        .then(data => {
-            if(data.resultCode === 0){
-                dispatch(setStatus(status))
-            }
-        })
-    }
+export let addPost = (newPostText: string): AddPostActionType => ({ type: ADD_POST, newPostText })
+export let setProfileUser = (profile: any): SetProfileUserActionType => ({ type: SET_PROFILE_USER, profile })
+export let setStatus = (status: any): SetStatusActionType => ({ type: SET_STATUS, status })
+export let deletePost = (id: number): DeletePostActionType => ({ type: DELETE_POST, id })
+
+export let profileUser = (userId: any) => async (dispatch: any) => {
+    let data = await profileApi.infoUser(userId)
+    dispatch(setProfileUser(data))
 }
 
+export let getStatus = (userId: any) => async (dispatch: any) => {
+    let data = await profileApi.getStatus(userId)
+    dispatch(setStatus(data))
+}
+
+export let updateStatus = (status: any) => async (dispatch: any) => {
+    let data = await profileApi.updateStatus(status)
+    if (data.resultCode === 0) {
+        dispatch(setStatus(status))
+    }
+}
 
 export default profileReducer

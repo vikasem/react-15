@@ -15,7 +15,8 @@ let Dialogs = (props) => {
     let messagesElements = state.messageData.map(message => <Message message={message.message} key={message.id} id={message.id} />)
 
     let addNewMessage = (values) => {
-        props.addMessageActionCreator(values.newMessageText);
+        props.addMessage(values.newMessageText);
+        values.newMessageText = ""
     }
 
     return (

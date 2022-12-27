@@ -1,5 +1,4 @@
-const ADD_MESSAGE = 'ADD-MESSAGE'
-const UPDATE_MESSAGE = 'UPDATE-MESSAGE'
+const ADD_MESSAGE = 'dialog/ADD-MESSAGE'
 
 type dialogsDataType = {
     id: number
@@ -53,7 +52,7 @@ type AddMessageActionType = {
     newMessageText: string
 }
 
-export let addMessageActionCreator = (newMessageText: string):AddMessageActionType => ({type: ADD_MESSAGE, newMessageText})
+export let addMessage = (newMessageText: string):AddMessageActionType => ({type: ADD_MESSAGE, newMessageText})
 
 
 export default dialogReducer

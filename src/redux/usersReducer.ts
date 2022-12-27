@@ -1,12 +1,12 @@
 import { usersApi } from "../api/api";
 
-const FOLLOW = 'FOLLOW'
-const UNFOLLOW = 'UNFOLLOW'
-const SET_USERS = 'SET_USERS'
-const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
-const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT'
-const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
-const TOGGLE_IS_FOLLOWING_PROGRESS = 'TOGGLE_IS_FOLLOWING_PROGRESS'
+const FOLLOW = 'users/FOLLOW'
+const UNFOLLOW = 'users/UNFOLLOW'
+const SET_USERS = 'users/SET_USERS'
+const SET_CURRENT_PAGE = 'users/SET_CURRENT_PAGE'
+const SET_TOTAL_USERS_COUNT = 'users/SET_TOTAL_USERS_COUNT'
+const TOGGLE_IS_FETCHING = 'users/TOGGLE_IS_FETCHING'
+const TOGGLE_IS_FOLLOWING_PROGRESS = 'users/TOGGLE_IS_FOLLOWING_PROGRESS'
 
 type UserType = {
     id: number
@@ -28,7 +28,7 @@ type InitialStateType = {
 let initialState: InitialStateType = {
     users: [],
     totalUsersCount: 0,
-    pageSize: 5,
+    pageSize: 10,
     currentPage: 1,
     isFetching: false,
     followingInProgress: []
@@ -139,44 +139,32 @@ export let setTotalCount = (totalUsersCount: number): SetTotalCountActionType =>
 export let setIsFetching = (isFetching: boolean): SetIsFetchingActionType => ({ type: TOGGLE_IS_FETCHING, isFetching })
 export let setIsFollowing = (isFetching: boolean, userId: number): SetIsFollowingActionType => ({ type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId })
 
-export let getUsers = (currentPage: any, pageSize: any) => {
-    return (dispatch: any) => {
-        dispatch(setIsFetching(true))
-        usersApi.getUsers(currentPage, pageSize)
-            .then((data: { items: any; totalCount: number }) => {
-                dispatch(setCurrentPage(currentPage));
-                dispatch(setIsFetching(false))
-                dispatch(setUsers(data.items))
-                let amount = data.totalCount / 200
-                dispatch(setTotalCount(amount))
-            })
-    }
+export let getUsers = (currentPage: any, pageSize: any) => async (dispatch: any) => {
+    dispatch(setIsFetching(true))
+    let data = await usersApi.getUsers(currentPage, pageSize)
+    dispatch(setCurrentPage(currentPage));
+    dispatch(setIsFetching(false))
+    dispatch(setUsers(data.items))
+    let amount = data.totalCount 
+    dispatch(setTotalCount(amount))
 }
 
-export let unfollow = (userId: any) => {
-    return (dispatch: any) => {
-        dispatch(setIsFollowing(true, userId))
-        usersApi.userDelete(userId)
-            .then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(unfollowSuccess(userId))
-                }
-                dispatch(setIsFollowing(false, userId))
-            })
+export let unfollow = (userId: any) => async (dispatch: any) => {
+    dispatch(setIsFollowing(true, userId))
+    let data = await usersApi.userDelete(userId)
+    if (data.resultCode === 0) {
+        dispatch(unfollowSuccess(userId))
     }
+    dispatch(setIsFollowing(false, userId))
 }
 
-export let follow = (userId: any) => {
-    return (dispatch: any) => {
-        dispatch(setIsFollowing(true, userId))
-        usersApi.userPost(userId)
-            .then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(followSuccess(userId))
-                }
-                dispatch(setIsFollowing(false, userId))
-            })
+export let follow = (userId: any) => async (dispatch: any) => {
+    dispatch(setIsFollowing(true, userId))
+    let data = await usersApi.userPost(userId)
+    if (data.resultCode === 0) {
+        dispatch(followSuccess(userId))
     }
+    dispatch(setIsFollowing(false, userId))
 }
 
 export default usersReducer
