@@ -6,6 +6,7 @@ import classes from './Dialogs.module.css';
 import DialogItem from './DialogsItem/DialogsItem.jsx'
 import Message from './Message/Message.jsx'
 
+
 let Dialogs = (props) => {
 
     let state = props.dialogPage;
