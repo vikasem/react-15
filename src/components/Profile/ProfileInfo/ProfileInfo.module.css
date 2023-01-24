@@ -5,3 +5,11 @@
 .panorama{
     width: 1100px;
 }
+
+.noAvatar{
+    max-width: 250px;
+}
+
+.contacts{
+    margin-left: 10px;
+}

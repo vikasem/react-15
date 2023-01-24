@@ -2,7 +2,7 @@ import React, { Component, useEffect, Suspense, lazy } from 'react';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
 //import DialogsContainer from './components/Dialogs/DialogsContainer';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Redirect, Navigate } from "react-router-dom";
 import UsersContainer from './components/Users/UsersContainer';
 //import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
@@ -18,12 +18,20 @@ let DialogsContainer = React.lazy(()=> import('./components/Dialogs/DialogsConta
 let ProfileContainer = React.lazy(()=> import('./components/Profile/ProfileContainer'))
 
 const App = (props) => {
+  let catchAllUnhandledError =(reason, promise)=> {
+    alert("some error")
+  }
   useEffect(() => {
     props.initializeApp()
+    window.addEventListener("unhandledrejection",catchAllUnhandledError)
+    return () => {
+      window.removeEventListener("unhandledrejection",catchAllUnhandledError)
+    }
   }, [])
 
   if (!props.initialized) {
     return <Preloader />
+    
   }
   return (
     <div className='app-wrapper'>
@@ -32,11 +40,13 @@ const App = (props) => {
       <div className='app-wrapper-content'>
       <Suspense fallback={<div><Preloader /></div>}>
         <Routes>
+          <Route exact path='/' element={<Navigate to={"/profile"}/>} />
           <Route path="/dialogs/*" element={<DialogsContainer />} />
           <Route path="/profile/:userId" element={<ProfileContainer />} />
           <Route path='/profile' element={<ProfileContainer />} />
           <Route path="/users" element={<UsersContainer />} />
           <Route path="/login" element={<Login />} />
+          <Route path="*" element={<div>404 NOT FOUND</div>} />
         </Routes>
       </Suspense>
       </div>

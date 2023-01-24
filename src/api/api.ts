@@ -1,4 +1,6 @@
+
 import axios from "axios"
+
 
 const instance = axios.create({
     withCredentials: true,
@@ -47,6 +49,25 @@ export let profileApi = {
         .then(response => {
             return response.data
         })
+    },
+    savePhoto(photos: any) {
+        let formData = new FormData();
+        formData.append("image", photos)
+        return instance.put('profile/photo', formData, {
+            headers: {
+                'Content-Type':'multipart/form-data'
+            }
+        })
+        .then(response => {
+            return response.data
+        })
+    },
+    saveProfile(profile: any) {
+        console.log(profile)
+        return instance.put('profile', profile)
+        .then(response => {
+            return response.data
+        })
     }
 }
 
@@ -57,14 +78,23 @@ export let meApi = {
             return response.data
         })
     },
-    login(email: any, password: any, rememderMe: any = false) {
-        return instance.post('auth/login', {email, password, rememderMe})
+    login(email: any, password: any, rememderMe: any = false, captcha: any = null) {
+        return instance.post('auth/login', {email, password, rememderMe, captcha})
         .then(response => {
             return response.data
         })
     },
     logout() {
         return instance.delete('auth/login')
+        .then(response => {
+            return response.data
+        })
+    }
+}
+
+export let securityApi = {
+    getCaptchaUrl() {
+        return instance.get('security/get-captcha-url')
         .then(response => {
             return response.data
         })

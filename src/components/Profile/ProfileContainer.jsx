@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Profile from './Profile.jsx';
 import { connect } from 'react-redux';
-import { profileUser, getStatus, updateStatus } from '../../redux/profileReducer';
+import { profileUser, getStatus, updateStatus, savePhoto, saveProfile } from '../../redux/profileReducer';
 import {
     useLocation,
     useNavigate,
@@ -23,10 +23,14 @@ let ProfileContainer = (props) => {
         }
         props.profileUser(userId);
         props.getStatus(userId)
-    },[])
+    },[router.params.userId])
     return (
-        <Profile {...props} profile = {props.profile} status = {props.status} 
-        updateStatus = {props.updateStatus} />
+        <Profile {...props} profile = {props.profile} 
+        status = {props.status} 
+        updateStatus = {props.updateStatus}
+        isOwner = {!router.params.userId}
+        savePhoto = {props.savePhoto}
+        saveProfile = {props.saveProfile} />
     )
 }
 let mapStateToProps = (state) => ({
@@ -36,6 +40,6 @@ let mapStateToProps = (state) => ({
 })
 
 export default compose(
-    connect(mapStateToProps, {profileUser, getStatus, updateStatus}),
+    connect(mapStateToProps, {profileUser, getStatus, updateStatus, savePhoto, saveProfile}),
     withAuthRedirect)
     (ProfileContainer)
